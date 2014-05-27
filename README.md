@@ -22,7 +22,8 @@ Google tools.
 				
 ## Usage
 
-The extension is written using classical inheritance ([Class.js](https://github.com/rokesoftware/polygons/blob/master/source/roke/Class.js) and dive in from there)
+The extension is written using classical inheritance ([Class.js](https://github.com/rokesoftware/polygons/blob/master/source/roke/Class.js)
+and dive in the source from there)
 and can therefore be used in the same way as the Google Maps API. For the extra bits it offers,
 see the demos, please. [This one](http://tadeaspetak.net/roke/polygons/demo/simple.html) is real simple while
 [this one](http://tadeaspetak.net/roke/polygons/demo/details.html) is a bit more advanced.
