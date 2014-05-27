@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="An extension of Google Maps API allowing users to create and manage polygons. Offers easily editable shapes, point snapping and more.">
+    <meta name="author" content="Roke Software">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+
+    <title>Simple demo | Polygons</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+		<link href="demos.css" rel="stylesheet">
+
+		<!-- Google Maps API -->
+		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=drawing"></script>
+		<!-- jQuery -->
+		<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+		<!-- Bootstrap -->
+		<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+		<script src="../source/roke/Roke.js"></script>
+		<script src="../source/roke/Class.js"></script>
+		<script src="../source/roke/polygons/Utils.js"></script>
+		<script src="../source/roke/polygons/Marker.js"></script>
+		<script src="../source/roke/polygons/Polygon.js"></script>
+		<script src="../source/roke/polygons/Map.js"></script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+		<script type="text/javascript">
+			$(function() {
+				new roke.polygons.Map(document.getElementById("map"), {
+					zoom: 10,
+					center: new google.maps.LatLng(50.0933, 14.4167),
+					mapTypeId: google.maps.MapTypeId.ROADMAP
+				});
+			});
+		</script>
+	</head>
+	<body>
+
+		<div id="header" class="container">
+			<div class="row">
+				<h3 id="header-brand"><a href="index.html" title="Home">Roke Polygons</a></h3>
+				<a id="github" href="https://github.com/rokesoftware/polygons" class="btn btn-primary" target="_blank"><span class="glyphicon glyphicon-home"></span> GitHub</a>
+				<ul id="navigation" class="nav">
+					<li><a href="index.html" title="Home">Home</a></li>
+					<li class="active"><a href="simple.html" title="Simple demo">Simple demo</a></li>
+					<li><a href="details.html" title="Polygons loading & details">Polygons loading & details</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="row">
+				<h1>Simple demo</h1>
+				<p>
+					A simple example of the funcionality.				
+				</p>
+				<p class="instructions">
+					<strong>Left-click</strong> the map to add points of a polygon
+					(you can drag them around, of course!), <strong>right-click</strong> the map to de-select all polygons.
+					<strong>Left-click</strong> the polygon to select it and feel free to add more points.
+					<strong>Right-click</strong> the polygon's points to remove them. Points
+					<strong>snap automatically</strong> to the vertices of other polygons.
+					If you want to unsnap a point <strong>drag it with ctrl</strong> pressed.
+				</p>
+				<div id="map"></div>
+			</div>
+		</div>
+		
+		<div id="footer" class="container">
+			<div class="row">
+				<p>Polygons Google Maps API extension, &copy; RokeSoftware</p>
+			</div>
+		</div>
+	</body>
+</html>

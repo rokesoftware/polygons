@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="An extension of Google Maps API allowing users to create and manage polygons. Offers easily editable shapes, point snapping and more.">
+    <meta name="author" content="Roke Software">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+
+    <title>Polygons loading & details | Polygons</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+		<link href="demos.css" rel="stylesheet">
+
+		<!-- Google Maps API -->
+		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=drawing"></script>
+		<!-- jQuery -->
+		<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+		<!-- Bootstrap -->
+		<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+		<script src="../source/roke/Roke.js"></script>
+		<script src="../source/roke/Class.js"></script>
+		<script src="../source/roke/polygons/Utils.js"></script>
+		<script src="../source/roke/polygons/Marker.js"></script>
+		<script src="../source/roke/polygons/Polygon.js"></script>
+		<script src="../source/roke/polygons/Map.js"></script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+		<style type="text/css">
+			#polygonDetails{
+				width:200px;
+				padding:1em 0;
+				position:absolute;
+				display:none;
+			}
+
+			#polygonDetails::after{
+				content:"";
+				display:table;
+				clear:both;
+			}
+
+			#polygonDetails input{
+				margin-bottom:10px;
+			}
+		</style>
+
+		<script type="text/javascript">
+			$(function() {
+				var $map = $("#map");
+
+				//init the map
+				var map = new roke.polygons.Map($map[0], {
+					zoom: 10,
+					center: new google.maps.LatLng(50.0933, 14.4167),
+					mapTypeId: google.maps.MapTypeId.ROADMAP
+				});
+
+
+				/** *********************** Events ****************************/
+
+				google.maps.event.addListener(map, 'polygonAdd', function(polygon) {
+					//update polygon count
+					$("#polygonsCount").text(map.getPolygons().length);
+					//enable details editting
+					google.maps.event.addListener(polygon, 'rightclick', showDetails);
+				});
+				google.maps.event.addListener(map, 'polygonRemove', function(polygon) {
+					$("#polygonsCount").text(map.getPolygons().length);
+					//tidy up
+					google.maps.event.removeListener(polygon, 'rightclick');
+				});
+
+
+				/** *********************** Load ****************************/
+
+				map.addPolygon({
+					title: 'Dave',
+					path: [[50.19624281347605, 14.464187622070312], [50.20503326494332, 14.683570861816406], [50.1513863288765, 14.677391052246094], [50.13422419041487, 14.527015686035156]]
+				});
+				map.addPolygon({
+					title: 'Arnold',
+					path: [[50.138185230436896, 14.192619323730469], [50.19624281347605, 14.464187622070312], [50.13422419041487, 14.527015686035156], [50.118376750913285, 14.300422668457031]]
+				});
+				map.addPolygon({
+					title: 'Kryten',
+					path: [[50.13422419041487, 14.527015686035156], [50.09063110478151, 14.837722778320312], [50.006856414187205, 14.808883666992188], [50.0059737975306, 14.258193969726562]]
+				});
+				//initialize point snapping on added polygons
+				map.initSnapping();
+
+
+				/** ******************* Get & show details ****************************/
+
+				$("#polygonsCoords").on('click', function(e) {
+					var html = "";
+
+					//get polygons
+					var polygons = map.getPolygons();
+					for (var i in polygons) {
+						//polygon's details
+						var polygon = polygons[i];
+						var points = polygon.getCoords();
+
+						//format the output
+						html += "Title: " + polygon.title + "<br />";
+						for (var j in points) {
+							var point = points[j];
+							html += "[" + point[0] + ", " + point[1] + "]" + (j == points.length - 1 ? '' : ',') + "<br/>";
+						}
+						html += "<br />";
+					}
+
+					//show the modal
+					var $modal = $('#modalCoords');
+					$modal.find('.modal-body').html(html);
+					$modal.modal('show');
+
+				});
+
+
+				/** ******************* Edit details ****************************/
+				
+				var detailsWindow = new google.maps.InfoWindow(),
+						$detailsForm = $("#polygonDetails"),
+						$detailsTitle = $detailsForm.find("#polygonDetailsTitle"),
+						$detailsRemove = $detailsForm.find("#polygonDetailsRemove");
+
+				function showDetails(e) {
+					var self = this;
+
+					//set the polygon title value
+					$detailsTitle.val(this.title);
+
+					//properties
+					detailsWindow.setPosition(e.latLng);
+					detailsWindow.setContent($detailsForm[0]);
+
+					//open the window
+					$detailsForm.show();
+					detailsWindow.open(this.map);
+
+					//on form submit...
+					$detailsForm.off('submit').on('submit', function(e) {
+						//save the data to the polygon
+						self.title = $detailsTitle.val();
+
+						detailsWindow.close();
+						return false;
+					});
+
+					//remove the polygon
+					$detailsRemove.off('click').on('click', function() {
+						detailsWindow.close();
+						self.remove();
+					});
+				}
+
+			});
+		</script>
+	</head>
+	<body>
+
+		<div id="header" class="container">
+			<div class="row">
+				<h3 id="header-brand"><a href="index.html" title="Home">Roke Polygons</a></h3>
+				<a id="github" href="https://github.com/rokesoftware/polygons" class="btn btn-primary" target="_blank"><span class="glyphicon glyphicon-home"></span> GitHub</a>
+				<ul id="navigation" class="nav">
+					<li><a href="index.html" title="Home">Home</a></li>
+					<li><a href="simple.html" title="Simple demo">Simple demo</a></li>
+					<li class="active"><a href="details.html" title="Polygons loading & details">Polygons loading & details</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="row">
+				<h1>Loading polygons & their details</h1>
+				<p>
+					Here we load a few polygons given by their coordinates together with
+					some extra info about them.
+				</p>
+				<p class="instructions">
+					<strong>Left-click</strong> the map to add points of a polygon
+					(you can drag them around, of course!), <strong>right-click</strong> the map to de-select all polygons.
+					<strong>Left-click</strong> the polygon to select it and feel free to add more points.
+					<strong>Right-click</strong> the polygon's points to remove them. Points
+					<strong>snap automatically</strong> to the vertices of other polygons.
+					If you want to unsnap a point <strong>drag it with ctrl</strong> pressed.
+				</p>
+				<p class="instructions no-border">
+					<strong>Right-click</strong> the polygon to edit its details.
+				</p>
+				<div id="toolbar">
+					<button id="polygonsCoords" class="btn btn-success"><span class="glyphicon glyphicon-info-sign"></span> Polygons details</button>
+					<span class="pull-right">Num of polygons: <span id="polygonsCount">0</span></span>
+				</div>
+				<div id="map"></div>
+			</div>
+		</div>
+		
+		<div id="footer" class="container">
+			<div class="row">
+				<p>Polygons Google Maps API extension, &copy; RokeSoftware</p>
+			</div>
+		</div>
+
+		<div class="modal fade" id="modalCoords">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Polygons details</h4>
+					</div>
+					<div class="modal-body">
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<form id="polygonDetails">
+			<input id="polygonDetailsTitle" placeholder="Title" class="form-control" />
+			<button type="submit" class="btn btn-primary btn-block" id="polygonDetailsSave"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
+			<button type="button" class="btn btn-danger btn-block" id="polygonDetailsRemove"><span class="glyphicon glyphicon-remove"></span> Remove the polygon</button>
+		</form>
+	</body>
+</html>

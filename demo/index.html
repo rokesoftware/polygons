@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="An extension of Google Maps API allowing users to create and manage polygons. Offers easily editable shapes, point snapping and more.">
+    <meta name="author" content="Roke Software">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+
+    <title>Demos | Polygons</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+		<link href="demos.css" rel="stylesheet">
+
+		<!-- Google Maps API -->
+		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=drawing"></script>
+		<!-- jQuery -->
+		<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+		<!-- Bootstrap -->
+		<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	</head>
+	<body>
+
+		<div id="header" class="container">
+			<div class="row">
+				<a id="github" href="https://github.com/rokesoftware/polygons" class="btn btn-primary" target="_blank"><span class="glyphicon glyphicon-home"></span> GitHub</a>
+				<h3 id="header-brand"><a href="index.html" title="Home">Roke Polygons</a></h3>
+				<ul id="navigation" class="nav">
+					<li class="active"><a href="index.html" title="Home">Home</a></li>
+					<li><a href="simple.html" title="Simple demo">Simple demo</a></li>
+					<li><a href="details.html" title="Polygons loading & details">Polygons loading & details</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="row">
+				<h1>Polygons</h1>
+				<p>
+					An extension of Google Maps API allowing users to create and manage polygons.
+					It offers easily editable shapes, point snapping and more.
+				</p>
+
+				<h2>Why an extension?</h2>
+				<p>
+					Google Maps API is a great tool but we found that it does not
+					provide us with what we need even when combined with the Drawing Tools.
+					Two main features we needed were:					
+				</p>
+				<ol>
+					<li>a fictional point in the middle of every edge in order for the shapes to be easily editable</li>
+					<li>the possibility to snap points to the vertices of other polygons</li>
+				</ol>
+				<p>
+					When you combine
+					<a href="https://developers.google.com/maps/documentation/javascript/examples/drawing-tools" target="_blank">Drawing Tools</a>
+					with
+					<a href="https://developers.google.com/maps/documentation/javascript/examples/user-editable-shapes" target="_blank">User-editable Shapes</a>
+					the first feature is covered. It turns out though that because (almost) all events are ignored
+					when a point of an editable shape is dragged, point snapping cannot be achieved using the standard
+					Google tools.
+				</p>
+				
+				<h2>Usage</h2>
+				<p>
+					The extension is written using classical inheritance
+					(<a href="https://github.com/rokesoftware/polygons/blob/master/source/roke/Class.js" target="_blank">Class.js</a>
+					and dive in from there)
+					and can therefore be used in the same way as the Google Maps API. For the extra bits it offers,
+					see the demos, please. <a href="simple.html" title="Simple demo">This one</a> is real simple while
+					<a href="details.html" title="Loading polygons & their details">this one</a> is a bit more advanced.
+				</p>
+				
+				<h2>Dependencies</h2>
+				<p>
+					<a href="https://developers.google.com/maps/documentation/javascript/tutorial" target="_blank">Google Maps API</a>,
+					obviously... and that's it!
+				</p>
+			</div>
+		</div>
+
+		<div id="footer" class="container">
+			<div class="row">
+				<p>Polygons Google Maps API extension, &copy; RokeSoftware</p>
+			</div>
+		</div>
+	</body>
+</html>
