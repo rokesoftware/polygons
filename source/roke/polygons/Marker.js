@@ -35,7 +35,7 @@
 			
 			
 			google.maps.event.addListener(this, 'mousedown', function(e) {
-				this.ctrlKey = e.Va.ctrlKey;
+				this.ctrlKey = Utils.getMouseEventObject(e).ctrlKey;
 			});
 			google.maps.event.addListener(this, 'mouseup', function(e) {
 				this.ctrlKey = false;
